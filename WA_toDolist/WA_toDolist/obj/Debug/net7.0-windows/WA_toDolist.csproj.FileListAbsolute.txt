@@ -22,3 +22,4 @@ C:\Users\zakaria.elyahiaouni\source\repos\WA_toDolist\WA_toDolist\bin\Debug\net7
 C:\Users\zakaria.elyahiaouni\source\repos\WA_toDolist\WA_toDolist\bin\Debug\net7.0-windows\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\zakaria.elyahiaouni\source\repos\WA_toDolist\WA_toDolist\bin\Debug\net7.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\zakaria.elyahiaouni\source\repos\WA_toDolist\WA_toDolist\obj\Debug\net7.0-windows\WA_toDolist.csproj.CopyComplete
+C:\Users\zakaria.elyahiaouni\source\repos\WA_toDolist\WA_toDolist\obj\Debug\net7.0-windows\WA_toDolist.Form2.resources

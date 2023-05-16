@@ -36,6 +36,7 @@
             RBtn_all = new RadioButton();
             button2 = new Button();
             label2 = new Label();
+            label3 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -113,21 +114,32 @@
             button2.TabIndex = 6;
             button2.Text = "+";
             button2.UseVisualStyleBackColor = true;
+            
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(77, 116);
+            label2.Location = new Point(432, 98);
             label2.Name = "label2";
-            label2.Size = new Size(38, 15);
+            label2.Size = new Size(15, 15);
             label2.TabIndex = 7;
-            label2.Text = "label2";
+            label2.Text = "^";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(453, 96);
+            label3.Name = "label3";
+            label3.Size = new Size(12, 15);
+            label3.TabIndex = 8;
+            label3.Text = "-";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(560, 270);
+            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(button2);
             Controls.Add(RBtn_all);
@@ -155,5 +167,6 @@
         private RadioButton RBtn_all;
         private Button button2;
         private Label label2;
+        private Label label3;
     }
 }
