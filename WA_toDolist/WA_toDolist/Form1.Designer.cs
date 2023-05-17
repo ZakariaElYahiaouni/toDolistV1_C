@@ -35,7 +35,6 @@
             RBtn_toDo = new RadioButton();
             RBtn_all = new RadioButton();
             button2 = new Button();
-            label2 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -113,22 +112,13 @@
             button2.TabIndex = 6;
             button2.Text = "+";
             button2.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(77, 116);
-            label2.Name = "label2";
-            label2.Size = new Size(38, 15);
-            label2.TabIndex = 7;
-            label2.Text = "label2";
+            button2.Click += button2_Click_1;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(560, 270);
-            Controls.Add(label2);
             Controls.Add(button2);
             Controls.Add(RBtn_all);
             Controls.Add(RBtn_toDo);
@@ -154,6 +144,5 @@
         private RadioButton RBtn_toDo;
         private RadioButton RBtn_all;
         private Button button2;
-        private Label label2;
     }
 }
