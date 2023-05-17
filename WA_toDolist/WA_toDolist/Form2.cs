@@ -64,5 +64,10 @@ namespace WA_toDolist
         {
 
         }
+
+        private void btn_remove_Click(object sender, EventArgs e)
+        {
+            connectionInstance.DeleteRow(connectionString, rowId);
+        }
     }
 }

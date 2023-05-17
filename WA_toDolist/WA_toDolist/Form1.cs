@@ -237,10 +237,11 @@ namespace WA_toDolist
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Button button = sender as Button;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                Button button = sender as Button;
+                
                 connection.Open();
                 string query;
                 int rowId = Convert.ToInt32(Convert.ToString(button.Name[button.Name.Length - 1]));

@@ -73,6 +73,23 @@ namespace WA_toDolist
                 SqlDataReader rNew = commandNew.ExecuteReader();
             }
         }
+        public void DeleteRow(string str, int idRow)
+        {
+            string connStr = str;
+
+            using (connection = new SqlConnection(connStr))
+            {
+                //DELETE FROM table_name WHERE condition;
+                connection.Open();
+
+                string query = "DELETE FROM toDoList WHERE Id = " + idRow + "";
+                SqlCommand commandDelete = new SqlCommand(query, connection);
+                SqlDataReader rDelete = commandDelete.ExecuteReader(); 
+                    
+
+
+            }
+        }
 
     }
 }

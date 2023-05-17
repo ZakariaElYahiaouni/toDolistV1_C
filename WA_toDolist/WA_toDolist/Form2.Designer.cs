@@ -38,6 +38,7 @@
             btn_edit = new Button();
             comboBoxDone = new ComboBox();
             label3 = new Label();
+            btn_remove = new Button();
             SuspendLayout();
             // 
             // btn_back
@@ -102,7 +103,7 @@
             // 
             // btn_edit
             // 
-            btn_edit.Location = new Point(499, 101);
+            btn_edit.Location = new Point(498, 85);
             btn_edit.Name = "btn_edit";
             btn_edit.Size = new Size(75, 23);
             btn_edit.TabIndex = 8;
@@ -129,11 +130,24 @@
             label3.Text = "Editing a row";
             label3.Click += label3_Click;
             // 
+            // btn_remove
+            // 
+            btn_remove.BackColor = Color.IndianRed;
+            btn_remove.ForeColor = SystemColors.Window;
+            btn_remove.Location = new Point(498, 114);
+            btn_remove.Name = "btn_remove";
+            btn_remove.Size = new Size(75, 23);
+            btn_remove.TabIndex = 14;
+            btn_remove.Text = "Remove";
+            btn_remove.UseVisualStyleBackColor = false;
+            btn_remove.Click += btn_remove_Click;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(597, 157);
+            ClientSize = new Size(597, 195);
+            Controls.Add(btn_remove);
             Controls.Add(label3);
             Controls.Add(comboBoxDone);
             Controls.Add(btn_edit);
@@ -164,5 +178,6 @@
         private Button btn_edit;
         private ComboBox comboBoxDone;
         private Label label3;
+        private Button btn_remove;
     }
 }
