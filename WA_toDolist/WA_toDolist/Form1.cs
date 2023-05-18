@@ -1,6 +1,9 @@
+﻿
 
-
+using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
+using System.Windows.Forms;
 
 
 namespace WA_toDolist
@@ -10,6 +13,9 @@ namespace WA_toDolist
         public Form1()
         {
             InitializeComponent();
+  
+
+          
 
         }
 
@@ -18,6 +24,7 @@ namespace WA_toDolist
         string connectionString = "Data Source=srvsql2022\\onboarding;Initial Catalog=ziko;Integrated Security=True";
         private void Form1_Load(object sender, EventArgs e)
         {
+
             try
             {
 
@@ -31,35 +38,67 @@ namespace WA_toDolist
             }
         }
         SqlCommand command;
+        SqlCommand commandDataGridView;
         SqlConnection connection;
         SqlDataReader reader;
+        SqlDataReader readerDataGridView;
+
+        DataTable dt = new DataTable();
+
         public void CreateConnection(string str)
         {
             string connStr = str;
+
+
 
             using (connection = new SqlConnection(connStr))
             {
 
                 connection.Open();
 
-                command = new SqlCommand("SELECT * from toDoList", connection);
-                reader = command.ExecuteReader();
-                while (reader.Read())
-                {
+                dt.Clear();
+                commandDataGridView = new SqlCommand("SELECT * from toDoList", connection);
+                readerDataGridView = commandDataGridView.ExecuteReader();
+                dt.Load(readerDataGridView);
+                dataGridView_layoutList.DataSource = dt;
+               
+                buttonsLoadingOnDataGridView();
+              
 
-                    createLayoutView(reader["Id"].ToString(), reader["title"].ToString(), reader["descriptionDuty"].ToString());
-
-                }
-                reader.Close();
+                readerDataGridView.Close();
 
             }
 
 
-
-
         }
 
-        int y = 116;
+        int count = 0;
+      
+        private void dataGridView_layoutList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+            if (e.ColumnIndex >= 0 && dataGridView_layoutList.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                if (e.ColumnIndex == dataGridView_layoutList.ColumnCount - 2)
+                {
+                    // Gestisci l'evento del pulsante 1
+                    DataGridViewRow Id = dataGridView_layoutList.Rows[Convert.ToInt32(e.RowIndex)];
+                    button2_Click(Convert.ToInt32(Id.Cells[0].Value));
+                  
+
+                }
+                else if (e.ColumnIndex == dataGridView_layoutList.ColumnCount - 1)
+                {
+                    // Gestisci l'evento del pulsante 2
+                    DataGridViewRow Id = dataGridView_layoutList.Rows[Convert.ToInt32(e.RowIndex)];
+                    int lastElement = dataGridView_layoutList.Rows.Count - 1;
+                   
+                    button1_Click(Convert.ToInt32(Id.Cells[0].Value), lastElement); 
+                }
+            }
+        }
+
+        int y = 136;
         int x = 57;
 
         List<Label> labels = new List<Label>();
@@ -67,70 +106,7 @@ namespace WA_toDolist
         int i = 1;
         private object sender;
 
-        public void createLayoutView(string id, string title, string descriptionDuty)
-        {
 
-
-
-
-            Label lblId = new Label();
-            lblId.Location = new Point(x, y);
-            lblId.Name = "lbl_ID";
-            lblId.Text = id;
-
-            labels.Add(lblId);
-
-
-            Label lblTitle = new Label();
-            lblTitle.Location = new Point(x + 150, y);
-            lblTitle.Name = "lbl_title";
-            lblTitle.Text = title;
-
-            labels.Add(lblTitle);
-
-            Label lbltextDescription = new Label();
-            lbltextDescription.Location = new Point(x + 250, y);
-            lbltextDescription.Name = "lbl_descriptionDuty";
-            lbltextDescription.Text = descriptionDuty;
-
-            labels.Add(lbltextDescription);
-
-            Button btnTodo = new Button();
-            btnTodo.Location = new Point(x + 380, y);
-            btnTodo.Name = "btn_toDo" + i.ToString();
-            btnTodo.Size = new Size(20, 20);
-
-
-
-            btnTodo.Text = "^";
-
-            buttons.Add(btnTodo);
-
-            Button btnEdit = new Button();
-            btnEdit.Location = new Point(x + 400, y);
-            btnEdit.Name = "btn_edit" + i.ToString();
-            btnEdit.Size = new Size(20, 20);
-
-            btnEdit.Text = "-";
-            buttons.Add(btnEdit);
-
-
-
-
-            lblId.Visible = true;
-            lblTitle.Visible = true;
-            lbltextDescription.Visible = true;
-            Controls.Add(lblId);
-            Controls.Add(lblTitle);
-            Controls.Add(lbltextDescription);
-            Controls.Add(btnEdit);
-            Controls.Add(btnTodo);
-
-            btnEdit.Click += new EventHandler(button1_Click);
-            btnTodo.Click += new EventHandler(button2_Click);
-            y += 40;
-            i++;
-        }
 
 
 
@@ -145,20 +121,13 @@ namespace WA_toDolist
 
 
                     string query = "SELECT Id, title, descriptionDuty FROM toDoList WHERE title='" + (txt_search.Text) + "'";
+                    dt.Clear();
                     SqlCommand commandSearch = new SqlCommand(query, connection);
                     SqlDataReader readerSearch;
                     readerSearch = commandSearch.ExecuteReader();
+                    dt.Load(readerSearch);
+                    dataGridView_layoutList.DataSource = dt;
 
-                    CancelRows();
-
-
-                    while (readerSearch.Read())
-                    {
-                        createLayoutView(readerSearch["Id"].ToString(), readerSearch["title"].ToString(), readerSearch["descriptionDuty"].ToString());
-
-
-                    }
-                    readerSearch.Close();
                 }
 
             }
@@ -167,85 +136,111 @@ namespace WA_toDolist
                 MessageBox.Show("Error, string empty! enter a string...");
             }
         }
-        public void CancelRows()
-        {
-            x = 57;
-            y = 116;
-            i = 1;
-            foreach (var label in labels)
-            {
-                this.Controls.Remove(label);
 
-            }
-
-            foreach (var button in buttons)
-            {
-                Controls.Remove(button);
-
-            }
-
-        }
+  
 
         private void RBtn_toDo_CheckedChanged(object sender, EventArgs e)
         {
-            CancelRows();
+         
             if (RBtn_toDo.Checked == true)
             {
 
-                using (connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string query = "SELECT * FROM toDoList WHERE done='n'";
-                    SqlCommand commandSearch = new SqlCommand(query, connection);
-                    SqlDataReader readerSearch;
-                    readerSearch = commandSearch.ExecuteReader();
-
-
-
-                    while (readerSearch.Read())
-                    {
-                        createLayoutView(readerSearch["Id"].ToString(), readerSearch["title"].ToString(), readerSearch["descriptionDuty"].ToString());
-
-
-                    }
-                    readerSearch.Close();
-                }
+                string query = "SELECT * FROM toDoList WHERE done='n'";
+                loadingDataGridView(connection, query);
 
             }
         }
 
+        private void loadingDataGridView(SqlConnection connection, string query)
+        {
+
+            dataGridView_layoutList.Columns.Remove("buttonToggle");
+            dataGridView_layoutList.Columns.Remove("buttonEdit");
+            using (connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                dt.Clear();
+                dataGridView_layoutList.DataSource = null;
+                SqlCommand command = new SqlCommand(query, connection);
+                SqlDataReader reader = command.ExecuteReader();
+                dt.Load(reader);
+                dataGridView_layoutList.DataSource = dt;
+                buttonsLoadingOnDataGridView();
+               
+                reader.Close();
+            }
+        }
+        public void buttonsLoadingOnDataGridView()
+        {
+            // Verifica se le colonne dei bottoni sono già state aggiunte alla DataGridView
+            if (!dataGridView_layoutList.Columns.Contains("buttonToggle"))
+            {
+                DataGridViewButtonColumn buttonToggle = new DataGridViewButtonColumn();
+                {
+                    buttonToggle.Name = "buttonToggle";
+                    buttonToggle.HeaderText = "do";
+                    buttonToggle.Text = "✔";
+                    buttonToggle.Width = 50;
+                    buttonToggle.DefaultCellStyle.Padding = new Padding(2);
+                    buttonToggle.UseColumnTextForButtonValue = true; //dont forget this line
+                    this.dataGridView_layoutList.Columns.Add(buttonToggle);
+                }
+            }
+
+            if (!dataGridView_layoutList.Columns.Contains("buttonEdit"))
+            {
+                DataGridViewButtonColumn buttonEdit = new DataGridViewButtonColumn();
+                {
+                    buttonEdit.Name = "buttonEdit";
+                    buttonEdit.HeaderText = "edit";
+
+                    buttonEdit.Text = "-";
+                    buttonEdit.Width = 50;
+                    buttonEdit.DefaultCellStyle.Padding = new Padding(2);
+                    buttonEdit.UseColumnTextForButtonValue = true; //dont forget this line
+
+                    this.dataGridView_layoutList.Columns.Add(buttonEdit);
+                }
+            }
+        }
         private void RBtn_all_CheckedChanged(object sender, EventArgs e)
         {
-            CancelRows();
+            
             if (RBtn_all.Checked == true)
             {
 
                 CreateConnection(connectionString);
             }
         }
-        private void button1_Click(object sender, EventArgs e)
+
+
+
+
+
+        private void button1_Click(int rowId, int i)
         {
 
-            Button button = sender as Button;
-            int rowId = Convert.ToInt32(Convert.ToString(button.Name[button.Name.Length - 1]));
-            Form2 form = new Form2(rowId);
 
-            form.Show(button);
+            Form2 form = new Form2(rowId, i);
+
+            form.Show();
 
         }
 
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(int rowId)
         {
+
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                Button button = sender as Button;
+
                 connection.Open();
                 string query;
-                int rowId = Convert.ToInt32(Convert.ToString(button.Name[button.Name.Length - 1]));
 
-                query = "SELECT done FROM toDoList WHERE Id = " + rowId;
+
+                query = "SELECT done FROM toDoList WHERE id = " + rowId;
 
                 using (SqlCommand commandUpdate = new SqlCommand(query, connection))
                 {
@@ -253,16 +248,17 @@ namespace WA_toDolist
 
                     if (readerUpdate.Read())
                     {
-                        if (readerUpdate[0].ToString() == "y")
+                        if (readerUpdate["done"].ToString() == "y")
                         {
                             using (SqlCommand commandToggle = new SqlCommand("UPDATE toDoList SET done = 'n' WHERE Id = " + rowId, connection))
                             {
+
                                 readerUpdate.Close();
                                 commandToggle.ExecuteNonQuery();
                             }
                             MessageBox.Show("undo");
                         }
-                        else if (readerUpdate[0].ToString() == "n")
+                        else if (readerUpdate["done"].ToString() == "n")
                         {
                             using (SqlCommand commandToggle = new SqlCommand("UPDATE toDoList SET done = 'y' WHERE Id = " + rowId, connection))
                             {
@@ -271,9 +267,11 @@ namespace WA_toDolist
                             }
                             MessageBox.Show("done");
                         }
+
                     }
 
                     readerUpdate.Close();
+
                 }
             }
 
@@ -282,7 +280,7 @@ namespace WA_toDolist
         private void button2_Click_1(object sender, EventArgs e)
         {
             Form3 form = new Form3();
-            form.Show(); 
+            form.ShowDialog(); //
         }
     }
 }

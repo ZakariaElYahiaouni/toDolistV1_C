@@ -35,6 +35,8 @@
             RBtn_toDo = new RadioButton();
             RBtn_all = new RadioButton();
             button2 = new Button();
+            dataGridView_layoutList = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dataGridView_layoutList).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -114,11 +116,22 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click_1;
             // 
+            // dataGridView_layoutList
+            // 
+            dataGridView_layoutList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView_layoutList.Location = new Point(12, 107);
+            dataGridView_layoutList.Name = "dataGridView_layoutList";
+            dataGridView_layoutList.RowTemplate.Height = 25;
+            dataGridView_layoutList.Size = new Size(545, 532);
+            dataGridView_layoutList.TabIndex = 7;
+            dataGridView_layoutList.CellContentClick += dataGridView_layoutList_CellContentClick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(560, 270);
+            ClientSize = new Size(560, 669);
+            Controls.Add(dataGridView_layoutList);
             Controls.Add(button2);
             Controls.Add(RBtn_all);
             Controls.Add(RBtn_toDo);
@@ -131,6 +144,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)dataGridView_layoutList).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -144,5 +158,6 @@
         private RadioButton RBtn_toDo;
         private RadioButton RBtn_all;
         private Button button2;
+        private DataGridView dataGridView_layoutList;
     }
 }

@@ -22,7 +22,8 @@ namespace WA_toDolist
 
         private void btn_new_Click(object sender, EventArgs e)
         {
-            connectionInstance.newRow(connectionString, txt_title2, txt_descriptionDuty);
+            connectionInstance.newRow(connectionString, txt_title2.Text, txt_descriptionDuty.Text);
+            MessageBox.Show("Row added!"); 
         }
 
         private void Form3_Load(object sender, EventArgs e)
