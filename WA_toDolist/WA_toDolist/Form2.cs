@@ -14,12 +14,14 @@ namespace WA_toDolist
     public partial class Form2 : Form
     {
         int rowId;
+        int lastElement;
         classConnection connectionInstance = new classConnection();
         string connectionString = "Data Source=srvsql2022\\onboarding;Initial Catalog=ziko;Integrated Security=True";
-        public Form2(int rowId)
+        public Form2(int rowId, int lastElement)
         {
             InitializeComponent();
             this.rowId = rowId;
+            this.lastElement = lastElement; 
         }
 
 
@@ -41,9 +43,10 @@ namespace WA_toDolist
             comboBoxDone.Items.Add("n");
 
             //
+            MessageBox.Show(rowId.ToString()); 
             try
             {
-                connectionInstance.CreateConnection(connectionString, rowId, txt_title, txt_descriptionDuty, comboBoxDone);
+                connectionInstance.CreateConnection(connectionString, rowId, txt_title.Text, txt_descriptionDuty.Text, comboBoxDone.Text);
             }
             catch (Exception ex)
             {
@@ -56,13 +59,30 @@ namespace WA_toDolist
         }
 
         private void btn_edit_Click(object sender, EventArgs e)
-        {
-            connectionInstance.EditRow(connectionString, rowId, txt_title, txt_descriptionDuty, comboBoxDone);
+        { 
+          
+                connectionInstance.EditRow(connectionString, rowId, txt_title.Text, txt_descriptionDuty.Text, comboBoxDone.Text);
+            
+          
         }
 
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_remove_Click(object sender, EventArgs e)
+        {
+            if (rowId == lastElement-1)
+            {
+                connectionInstance.DeleteRow(connectionString, rowId);
+            }
+            else
+            {
+                
+                MessageBox.Show("Error, you can only delete the last element of the database");
+            }
+         
         }
     }
 }

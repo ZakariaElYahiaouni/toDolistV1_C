@@ -71,8 +71,6 @@ namespace WA_toDolist
         {
 
 
-
-
             Label lblId = new Label();
             lblId.Location = new Point(x, y);
             lblId.Name = "lbl_ID";
@@ -228,7 +226,7 @@ namespace WA_toDolist
 
             Button button = sender as Button;
             int rowId = Convert.ToInt32(Convert.ToString(button.Name[button.Name.Length - 1]));
-            Form2 form = new Form2(rowId);
+            Form2 form = new Form2(rowId, i);
 
             form.Show(button);
 
@@ -237,15 +235,16 @@ namespace WA_toDolist
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Button button = sender as Button;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                Button button = sender as Button;
+                
                 connection.Open();
                 string query;
                 int rowId = Convert.ToInt32(Convert.ToString(button.Name[button.Name.Length - 1]));
 
-                query = "SELECT done FROM toDoList WHERE Id = " + rowId;
+                query = "SELECT done FROM toDoList WHERE id = " + rowId;
 
                 using (SqlCommand commandUpdate = new SqlCommand(query, connection))
                 {
@@ -253,7 +252,7 @@ namespace WA_toDolist
 
                     if (readerUpdate.Read())
                     {
-                        if (readerUpdate[0].ToString() == "y")
+                        if (readerUpdate["done"].ToString() == "y")
                         {
                             using (SqlCommand commandToggle = new SqlCommand("UPDATE toDoList SET done = 'n' WHERE Id = " + rowId, connection))
                             {
@@ -262,7 +261,7 @@ namespace WA_toDolist
                             }
                             MessageBox.Show("undo");
                         }
-                        else if (readerUpdate[0].ToString() == "n")
+                        else if (readerUpdate["done"].ToString() == "n")
                         {
                             using (SqlCommand commandToggle = new SqlCommand("UPDATE toDoList SET done = 'y' WHERE Id = " + rowId, connection))
                             {
@@ -274,6 +273,7 @@ namespace WA_toDolist
                     }
 
                     readerUpdate.Close();
+
                 }
             }
 
@@ -282,7 +282,7 @@ namespace WA_toDolist
         private void button2_Click_1(object sender, EventArgs e)
         {
             Form3 form = new Form3();
-            form.Show(); 
+            form.ShowDialog(); //
         }
     }
 }
